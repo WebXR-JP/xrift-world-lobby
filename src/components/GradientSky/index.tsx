@@ -24,6 +24,7 @@ const fragmentShader = `
       c = mix(uM, uB, smoothstep(0.0, -0.3, h));
     }
     gl_FragColor = vec4(c, 1.0);
+    #include <colorspace_fragment>
   }
 `
 
@@ -39,7 +40,7 @@ export const GradientSky: React.FC = () => {
 
   return (
     <mesh>
-      <sphereGeometry args={[140, 32, 32]} />
+      <sphereGeometry args={[2500, 32, 32]} />
       <shaderMaterial
         uniforms={uniforms}
         vertexShader={vertexShader}

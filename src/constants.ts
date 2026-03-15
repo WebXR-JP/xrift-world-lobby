@@ -14,11 +14,11 @@ export const COLORS = {
   rail: '#9890b0',
 
   // スカイ・環境
-  skyTop: '#88bbee',
-  skyMid: '#c8d8f0',
-  skyBottom: '#e0d4e8',
-  fog: '#c0d0e8',
-  groundFar: '#504868',
+  skyTop: '#d4cee4',
+  skyMid: '#c8c4dc',
+  skyBottom: '#c8c4dc',
+  fog: '#c8c4dc',
+  groundFar: '#807090',
 } as const
 
 export const PLATFORM = {

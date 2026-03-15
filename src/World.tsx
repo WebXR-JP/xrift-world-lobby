@@ -1,4 +1,7 @@
 import { SpawnPoint } from '@xrift/world-components'
+import { useThree } from '@react-three/fiber'
+import { FogExp2 } from 'three'
+import { useEffect } from 'react'
 import { Platform } from './components/Platform'
 import { GradientSky } from './components/GradientSky'
 import { StageWing } from './components/StageWing'
@@ -12,11 +15,20 @@ export interface WorldProps {
   scale?: number
 }
 
+function SceneFog() {
+  const scene = useThree((s) => s.scene)
+  useEffect(() => {
+    scene.fog = new FogExp2(COLORS.fog, 0.003)
+    return () => { scene.fog = null }
+  }, [scene])
+  return null
+}
+
 export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 }) => {
   return (
     <group position={position} scale={scale}>
       <GradientSky />
-      <fogExp2 attach="fog" args={[COLORS.fog, 0.005]} />
+      <SceneFog />
 
       <group position={[0, 0.5, 0]}>
         <SpawnPoint />
@@ -64,8 +76,8 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
 
       {/* 遠景の地面 */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -12, 0]}>
-        <planeGeometry args={[400, 400]} />
-        <meshStandardMaterial color={COLORS.groundFar} transparent opacity={0.6} />
+        <planeGeometry args={[4000, 4000]} />
+        <meshBasicMaterial color={COLORS.groundFar} />
       </mesh>
     </group>
   )

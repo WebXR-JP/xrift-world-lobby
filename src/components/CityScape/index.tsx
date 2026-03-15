@@ -1,49 +1,66 @@
-import { useMemo } from 'react'
-import { Color } from 'three'
+import { useEffect, useMemo, useRef } from 'react'
+import { Color, Matrix4, Object3D, InstancedMesh as ThreeInstancedMesh } from 'three'
+import { COLORS } from '../../constants'
 
-interface Building {
-  x: number
-  z: number
-  w: number
-  h: number
-  d: number
-  color: string
+// 近距離50 + 中距離100 + 遠距離150 + 超遠距離200 = 500棟
+const RINGS = [
+  { count: 50, minDist: 55, maxDist: 100, minH: 8, maxH: 50, minW: 2, maxW: 7 },
+  { count: 100, minDist: 150, maxDist: 350, minH: 15, maxH: 80, minW: 4, maxW: 12 },
+  { count: 150, minDist: 400, maxDist: 700, minH: 20, maxH: 120, minW: 6, maxW: 18 },
+  { count: 200, minDist: 800, maxDist: 1500, minH: 30, maxH: 200, minW: 8, maxW: 25 },
+]
+
+const COUNT = RINGS.reduce((sum, r) => sum + r.count, 0)
+
+// シード付き擬似乱数（位置固定用）
+function seededRandom(seed: number) {
+  let s = seed
+  return () => {
+    s = (s * 16807 + 0) % 2147483647
+    return s / 2147483647
+  }
 }
 
 export const CityScape: React.FC = () => {
-  const buildings = useMemo<Building[]>(() => {
-    const result: Building[] = []
-    for (let i = 0; i < 50; i++) {
-      const a = (i / 50) * Math.PI * 2
-      const dist = 55 + Math.random() * 45
-      const h = 8 + Math.random() * 50
-      const w = 2 + Math.random() * 7
-      const c = new Color()
-      c.setHSL(0.72, 0.1, 0.48 + Math.random() * 0.15)
-      result.push({
-        x: Math.cos(a) * dist,
-        z: Math.sin(a) * dist,
-        w,
-        h,
-        d: w * (0.4 + Math.random() * 0.6),
-        color: `#${c.getHexString()}`,
-      })
+  const meshRef = useRef<ThreeInstancedMesh>(null)
+
+  const buildings = useMemo(() => {
+    const rand = seededRandom(12345)
+    const dummy = new Object3D()
+    const matrices: Matrix4[] = []
+
+    for (const ring of RINGS) {
+      for (let i = 0; i < ring.count; i++) {
+        const a = (i / ring.count) * Math.PI * 2 + rand() * 0.1
+        const dist = ring.minDist + rand() * (ring.maxDist - ring.minDist)
+        const h = ring.minH + rand() * (ring.maxH - ring.minH)
+        const w = ring.minW + rand() * (ring.maxW - ring.minW)
+        const d = w * (0.4 + rand() * 0.6)
+
+        dummy.position.set(Math.cos(a) * dist, h / 2 - 10, Math.sin(a) * dist)
+        dummy.scale.set(w, h, d)
+        dummy.updateMatrix()
+        matrices.push(dummy.matrix.clone())
+      }
     }
-    return result
+
+    return matrices
   }, [])
 
+  useEffect(() => {
+    const mesh = meshRef.current
+    if (!mesh) return
+
+    for (let i = 0; i < COUNT; i++) {
+      mesh.setMatrixAt(i, buildings[i])
+    }
+    mesh.instanceMatrix.needsUpdate = true
+  }, [buildings])
+
   return (
-    <group>
-      {buildings.map((b, i) => (
-        <mesh key={i} position={[b.x, b.h / 2 - 10, b.z]}>
-          <boxGeometry args={[b.w, b.h, b.d]} />
-          <meshStandardMaterial
-            color={b.color}
-            transparent
-            opacity={0.4}
-          />
-        </mesh>
-      ))}
-    </group>
+    <instancedMesh ref={meshRef} args={[undefined, undefined, COUNT]} frustumCulled={false}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshBasicMaterial color={COLORS.groundFar} />
+    </instancedMesh>
   )
 }

@@ -6,8 +6,11 @@ import { COLORS } from '../../constants'
 
 const SZ = -18
 
+const SCREEN_WIDTH = 15
+const SCREEN_HEIGHT = SCREEN_WIDTH * 9 / 16
+
 export const StageWing: React.FC = () => {
-  const screenGeo = useMemo(() => new BoxGeometry(15, 8.4375, 0.12), [])
+  const screenGeo = useMemo(() => new BoxGeometry(SCREEN_WIDTH, SCREEN_HEIGHT, 0.12), [])
 
   return (
     <group>
@@ -30,54 +33,17 @@ export const StageWing: React.FC = () => {
         </mesh>
       ))}
 
-      {/* スクリーン（中央） */}
+      {/* メインスクリーン（客席向き） */}
       <group position={[0, 7.03, -21.84]}>
-        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={15} />
+        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={SCREEN_WIDTH} />
         <lineSegments>
           <edgesGeometry args={[screenGeo]} />
           <lineBasicMaterial color={COLORS.accent} />
         </lineSegments>
-        <mesh position={[0, 4.22, 0]}>
-          <boxGeometry args={[15, 0.06, 0.18]} />
-          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={1.5} />
-        </mesh>
-        <mesh position={[0, -4.22, 0]}>
-          <boxGeometry args={[15, 0.04, 0.18]} />
-          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={0.8} />
-        </mesh>
       </group>
-      {/* スクリーン（左） */}
-      <group position={[-14.58, 7.03, -17.98]} rotation={[0, Math.PI / 6, 0]}>
-        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={15} />
-        <lineSegments>
-          <edgesGeometry args={[screenGeo]} />
-          <lineBasicMaterial color={COLORS.accent} />
-        </lineSegments>
-        <mesh position={[0, 4.22, 0]}>
-          <boxGeometry args={[15, 0.06, 0.18]} />
-          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={1.5} />
-        </mesh>
-        <mesh position={[0, -4.22, 0]}>
-          <boxGeometry args={[15, 0.04, 0.18]} />
-          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={0.8} />
-        </mesh>
-      </group>
-      {/* スクリーン（右） */}
-      <group position={[14.61, 7.03, -18.09]} rotation={[0, -Math.PI / 6, 0]}>
-        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={15} />
-        <lineSegments>
-          <edgesGeometry args={[screenGeo]} />
-          <lineBasicMaterial color={COLORS.accent} />
-        </lineSegments>
-        <mesh position={[0, 4.22, 0]}>
-          <boxGeometry args={[15, 0.06, 0.18]} />
-          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={1.5} />
-        </mesh>
-        <mesh position={[0, -4.22, 0]}>
-          <boxGeometry args={[15, 0.04, 0.18]} />
-          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={0.8} />
-        </mesh>
-      </group>
+
+      {/* 返しモニター（登壇者向き） */}
+      <ScreenShareDisplay id="stage-screen" position={[0, 3.24, -14.12]} width={3} rotation={[-2.83, 0, Math.PI]} />
 
       {/* 階段 */}
       <RigidBody type="fixed" colliders="cuboid">

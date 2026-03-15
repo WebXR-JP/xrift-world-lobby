@@ -54,6 +54,9 @@ export default defineConfig({
           singleton: true,
           requiredVersion: '^0.1.0',
         },
+        '@react-three/uikit': {
+          singleton: true,
+        },
       },
     }),
   ],

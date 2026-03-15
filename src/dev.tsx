@@ -6,7 +6,7 @@
  */
 
 import { DevEnvironment, XRiftProvider } from '@xrift/world-components'
-import type { PhysicsConfig } from '@xrift/world-components'
+import type { PhysicsConfig, CameraConfig } from '@xrift/world-components'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { World } from './World'
@@ -15,14 +15,15 @@ import xriftConfig from '../xrift.json'
 const rootElement = document.getElementById('root')
 if (!rootElement) throw new Error('Root element not found')
 
-const physicsConfig: PhysicsConfig | undefined = (
-  xriftConfig as { physics?: PhysicsConfig }
-).physics
+const worldConfig = xriftConfig.world as {
+  physics?: PhysicsConfig
+  camera?: CameraConfig
+}
 
 createRoot(rootElement).render(
   <StrictMode>
     <XRiftProvider baseUrl="/">
-      <DevEnvironment physicsConfig={physicsConfig}>
+      <DevEnvironment physicsConfig={worldConfig.physics} camera={worldConfig.camera}>
         <World />
       </DevEnvironment>
     </XRiftProvider>
