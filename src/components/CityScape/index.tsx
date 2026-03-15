@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Color, Matrix4, Object3D, InstancedMesh as ThreeInstancedMesh } from 'three'
+import { Matrix4, Object3D, InstancedMesh as ThreeInstancedMesh } from 'three'
 import { COLORS } from '../../constants'
 
 // 近距離50 + 中距離100 + 遠距離150 + 超遠距離200 = 500棟
