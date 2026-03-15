@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { Color } from 'three'
-import { COLORS } from '../../constants'
 
 interface Building {
   x: number
@@ -9,7 +8,6 @@ interface Building {
   h: number
   d: number
   color: string
-  hasLight: boolean
 }
 
 export const CityScape: React.FC = () => {
@@ -29,7 +27,6 @@ export const CityScape: React.FC = () => {
         h,
         d: w * (0.4 + Math.random() * 0.6),
         color: `#${c.getHexString()}`,
-        hasLight: Math.random() > 0.55,
       })
     }
     return result
@@ -38,26 +35,14 @@ export const CityScape: React.FC = () => {
   return (
     <group>
       {buildings.map((b, i) => (
-        <group key={i}>
-          <mesh position={[b.x, b.h / 2 - 10, b.z]}>
-            <boxGeometry args={[b.w, b.h, b.d]} />
-            <meshStandardMaterial
-              color={b.color}
-              transparent
-              opacity={0.4}
-            />
-          </mesh>
-          {b.hasLight && (
-            <mesh position={[b.x, b.h - 9.5, b.z]}>
-              <sphereGeometry args={[0.15, 6, 6]} />
-              <meshStandardMaterial
-                color={COLORS.accent}
-                emissive={COLORS.accent}
-                emissiveIntensity={2}
-              />
-            </mesh>
-          )}
-        </group>
+        <mesh key={i} position={[b.x, b.h / 2 - 10, b.z]}>
+          <boxGeometry args={[b.w, b.h, b.d]} />
+          <meshStandardMaterial
+            color={b.color}
+            transparent
+            opacity={0.4}
+          />
+        </mesh>
       ))}
     </group>
   )
