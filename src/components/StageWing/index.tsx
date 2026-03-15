@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 import { RigidBody } from '@react-three/rapier'
+import { ScreenShareDisplay } from '@xrift/world-components'
 import { BoxGeometry } from 'three'
 import { COLORS } from '../../constants'
 
 const SZ = -18
 
 export const StageWing: React.FC = () => {
-  const screenGeo = useMemo(() => new BoxGeometry(10, 4.5, 0.12), [])
+  const screenGeo = useMemo(() => new BoxGeometry(15, 8.4375, 0.12), [])
 
   return (
     <group>
@@ -30,21 +31,18 @@ export const StageWing: React.FC = () => {
       ))}
 
       {/* スクリーン */}
-      <group position={[0, 3.8, SZ - 3.9]}>
-        <mesh>
-          <boxGeometry args={[10, 4.5, 0.12]} />
-          <meshPhysicalMaterial color={COLORS.glass} transparent opacity={0.35} roughness={0.05} />
-        </mesh>
+      <group position={[0, 8.0, SZ - 3.9]}>
+        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={15} />
         <lineSegments>
           <edgesGeometry args={[screenGeo]} />
           <lineBasicMaterial color={COLORS.accent} />
         </lineSegments>
-        <mesh position={[0, 2.3, 0]}>
-          <boxGeometry args={[10, 0.06, 0.18]} />
+        <mesh position={[0, 4.22, 0]}>
+          <boxGeometry args={[15, 0.06, 0.18]} />
           <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={1.5} />
         </mesh>
-        <mesh position={[0, -2.28, 0]}>
-          <boxGeometry args={[10, 0.04, 0.18]} />
+        <mesh position={[0, -4.22, 0]}>
+          <boxGeometry args={[15, 0.04, 0.18]} />
           <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={0.8} />
         </mesh>
       </group>
@@ -62,18 +60,6 @@ export const StageWing: React.FC = () => {
           <meshStandardMaterial color={COLORS.structure} />
         </mesh>
       </RigidBody>
-
-      {/* ポディウム */}
-      <RigidBody type="fixed" colliders="cuboid">
-
-      </RigidBody>
-
-      {/* 観客席 */}
-      {[0, 1, 2].map((i) => (
-        <RigidBody key={i} type="fixed" colliders="cuboid">
-
-        </RigidBody>
-      ))}
     </group>
   )
 }
