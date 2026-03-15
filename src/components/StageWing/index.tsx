@@ -30,8 +30,40 @@ export const StageWing: React.FC = () => {
         </mesh>
       ))}
 
-      {/* スクリーン */}
-      <group position={[0, 8.0, SZ - 3.9]}>
+      {/* スクリーン（中央） */}
+      <group position={[0, 7.03, -21.84]}>
+        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={15} />
+        <lineSegments>
+          <edgesGeometry args={[screenGeo]} />
+          <lineBasicMaterial color={COLORS.accent} />
+        </lineSegments>
+        <mesh position={[0, 4.22, 0]}>
+          <boxGeometry args={[15, 0.06, 0.18]} />
+          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={1.5} />
+        </mesh>
+        <mesh position={[0, -4.22, 0]}>
+          <boxGeometry args={[15, 0.04, 0.18]} />
+          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={0.8} />
+        </mesh>
+      </group>
+      {/* スクリーン（左） */}
+      <group position={[-14.58, 7.03, -17.98]} rotation={[0, Math.PI / 6, 0]}>
+        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={15} />
+        <lineSegments>
+          <edgesGeometry args={[screenGeo]} />
+          <lineBasicMaterial color={COLORS.accent} />
+        </lineSegments>
+        <mesh position={[0, 4.22, 0]}>
+          <boxGeometry args={[15, 0.06, 0.18]} />
+          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={1.5} />
+        </mesh>
+        <mesh position={[0, -4.22, 0]}>
+          <boxGeometry args={[15, 0.04, 0.18]} />
+          <meshStandardMaterial color={COLORS.accent} emissive={COLORS.accent} emissiveIntensity={0.8} />
+        </mesh>
+      </group>
+      {/* スクリーン（右） */}
+      <group position={[14.61, 7.03, -18.09]} rotation={[0, -Math.PI / 6, 0]}>
         <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={15} />
         <lineSegments>
           <edgesGeometry args={[screenGeo]} />
