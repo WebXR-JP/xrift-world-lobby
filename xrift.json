@@ -1,8 +1,8 @@
 {
   "world": {
     "distDir": "./dist",
-    "title": "サンプルワールド",
-    "description": "React Three FiberとRapierで作られたサンプルワールドです",
+    "title": "The Lobby",
+    "description": "XRift におけるロビーのようなワールドです。イベント会場や交流スペースなど、様々な用途で利用できることを想定しています。",
     "thumbnailPath": "thumbnail.png",
     "buildCommand": "npm run build",
     "ignore": [
