@@ -1,6 +1,7 @@
 import { useMemo, useState, useCallback } from 'react'
 import { RigidBody } from '@react-three/rapier'
 import { ScreenShareDisplay, LiveVideoPlayer, Interactable } from '@xrift/world-components'
+import { Container, Text } from '@react-three/uikit'
 import { BoxGeometry } from 'three'
 import { COLORS } from '../../constants'
 
@@ -40,31 +41,6 @@ export const StageWing: React.FC = () => {
         </mesh>
       ))}
 
-      {/* スクリーン切り替えボタン（ステージ上・登壇者エリア） */}
-      <Interactable
-        id="stage-screen-mode-toggle"
-        type="button"
-        onInteract={toggleMode}
-        interactionText={mode === 'screen-share' ? 'ライブ配信に切替' : '画面共有に切替'}
-      >
-        <group position={[4, 1.8, SZ]}>
-          <mesh>
-            <boxGeometry args={[1.2, 0.4, 0.1]} />
-            <meshStandardMaterial
-              color={mode === 'screen-share' ? COLORS.accent : '#ff6b8a'}
-              emissive={mode === 'screen-share' ? COLORS.accent : '#ff6b8a'}
-              emissiveIntensity={0.6}
-              roughness={0.3}
-            />
-          </mesh>
-          {/* モード表示テキスト */}
-          <mesh position={[0, 0.4, 0]}>
-            <boxGeometry args={[1.4, 0.2, 0.02]} />
-            <meshStandardMaterial color="#1a1a2e" opacity={0.8} transparent />
-          </mesh>
-        </group>
-      </Interactable>
-
       {/* メインスクリーン（客席向き） */}
       <group position={[0, 7.03, -21.84]}>
         {mode === 'screen-share' ? (
@@ -78,12 +54,57 @@ export const StageWing: React.FC = () => {
         </lineSegments>
       </group>
 
-      {/* 返しモニター（登壇者向き） */}
-      {mode === 'screen-share' ? (
-        <ScreenShareDisplay id="stage-screen" position={[0, 2.5, -14.12]} width={2} rotation={[-2.83, 0, Math.PI]} />
-      ) : (
-        <LiveVideoPlayer id="stage-screen" position={[0, 2.5, -14.12]} width={2} rotation={[-2.83, 0, Math.PI]} sync="global" />
-      )}
+      {/* 返しモニター + 切り替えパネル（登壇者向き） */}
+      <group position={[0, 2.5, -14.12]} rotation={[-2.83, 0, Math.PI]}>
+        {mode === 'screen-share' ? (
+          <ScreenShareDisplay id="stage-screen" width={2} />
+        ) : (
+          <LiveVideoPlayer id="stage-screen" width={2} sync="global" />
+        )}
+
+        {/* スクリーン切り替えパネル */}
+        <Interactable
+          id="stage-screen-mode-toggle"
+          type="button"
+          onInteract={toggleMode}
+          interactionText={mode === 'screen-share' ? 'ライブ配信に切替' : '画面共有に切替'}
+        >
+          <group position={[1.6, 0, 0]}>
+            <Container
+              pixelSize={0.003}
+              width={320}
+              flexDirection="column"
+              alignItems="center"
+              gap={10}
+              padding={16}
+              backgroundColor="#1a1a2ecc"
+              borderRadius={12}
+              borderWidth={2}
+              borderColor={mode === 'screen-share' ? COLORS.accent : '#ff6b8a'}
+            >
+              <Text fontSize={13} color="#ffffffaa">
+                {'Screen Mode'}
+              </Text>
+              <Container
+                alignSelf="stretch"
+                paddingTop={10}
+                paddingBottom={10}
+                backgroundColor={mode === 'screen-share' ? COLORS.accent : '#ff6b8a'}
+                borderRadius={8}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Text fontSize={18} color="white" fontWeight="bold">
+                  {mode === 'screen-share' ? 'Screen Share' : 'Live Video'}
+                </Text>
+              </Container>
+              <Text fontSize={11} color="#ffffff66">
+                {'Click to switch'}
+              </Text>
+            </Container>
+          </group>
+        </Interactable>
+      </group>
 
       {/* 階段 */}
       <RigidBody type="fixed" colliders="cuboid">
