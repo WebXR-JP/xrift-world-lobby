@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import { RigidBody } from '@react-three/rapier'
-import { ScreenShareDisplay } from '@xrift/world-components'
+import { ScreenShareDisplay, LiveVideoPlayer, Interactable } from '@xrift/world-components'
 import { BoxGeometry } from 'three'
 import { COLORS } from '../../constants'
 
@@ -9,8 +9,15 @@ const SZ = -18
 const SCREEN_WIDTH = 15
 const SCREEN_HEIGHT = SCREEN_WIDTH * 9 / 16
 
+type ScreenMode = 'screen-share' | 'live-video'
+
 export const StageWing: React.FC = () => {
   const screenGeo = useMemo(() => new BoxGeometry(SCREEN_WIDTH, SCREEN_HEIGHT, 0.12), [])
+  const [mode, setMode] = useState<ScreenMode>('screen-share')
+
+  const toggleMode = useCallback(() => {
+    setMode((prev) => (prev === 'screen-share' ? 'live-video' : 'screen-share'))
+  }, [])
 
   return (
     <group>
@@ -33,9 +40,38 @@ export const StageWing: React.FC = () => {
         </mesh>
       ))}
 
+      {/* スクリーン切り替えボタン（ステージ上・登壇者エリア） */}
+      <Interactable
+        id="stage-screen-mode-toggle"
+        type="button"
+        onInteract={toggleMode}
+        interactionText={mode === 'screen-share' ? 'ライブ配信に切替' : '画面共有に切替'}
+      >
+        <group position={[4, 1.8, SZ]}>
+          <mesh>
+            <boxGeometry args={[1.2, 0.4, 0.1]} />
+            <meshStandardMaterial
+              color={mode === 'screen-share' ? COLORS.accent : '#ff6b8a'}
+              emissive={mode === 'screen-share' ? COLORS.accent : '#ff6b8a'}
+              emissiveIntensity={0.6}
+              roughness={0.3}
+            />
+          </mesh>
+          {/* モード表示テキスト */}
+          <mesh position={[0, 0.4, 0]}>
+            <boxGeometry args={[1.4, 0.2, 0.02]} />
+            <meshStandardMaterial color="#1a1a2e" opacity={0.8} transparent />
+          </mesh>
+        </group>
+      </Interactable>
+
       {/* メインスクリーン（客席向き） */}
       <group position={[0, 7.03, -21.84]}>
-        <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={SCREEN_WIDTH} />
+        {mode === 'screen-share' ? (
+          <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={SCREEN_WIDTH} />
+        ) : (
+          <LiveVideoPlayer id="stage-screen" position={[0, 0, 0.1]} width={SCREEN_WIDTH} sync="global" />
+        )}
         <lineSegments>
           <edgesGeometry args={[screenGeo]} />
           <lineBasicMaterial color={COLORS.accent} />
@@ -43,7 +79,11 @@ export const StageWing: React.FC = () => {
       </group>
 
       {/* 返しモニター（登壇者向き） */}
-      <ScreenShareDisplay id="stage-screen" position={[0, 3.24, -14.12]} width={3} rotation={[-2.83, 0, Math.PI]} />
+      {mode === 'screen-share' ? (
+        <ScreenShareDisplay id="stage-screen" position={[0, 2.5, -14.12]} width={2} rotation={[-2.83, 0, Math.PI]} />
+      ) : (
+        <LiveVideoPlayer id="stage-screen" position={[0, 2.5, -14.12]} width={2} rotation={[-2.83, 0, Math.PI]} sync="global" />
+      )}
 
       {/* 階段 */}
       <RigidBody type="fixed" colliders="cuboid">
