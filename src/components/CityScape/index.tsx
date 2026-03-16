@@ -10,8 +10,6 @@ const RINGS = [
   { count: 200, minDist: 800, maxDist: 1500, minH: 30, maxH: 200, minW: 8, maxW: 25 },
 ]
 
-const COUNT = RINGS.reduce((sum, r) => sum + r.count, 0)
-
 // シード付き擬似乱数（位置固定用）
 function seededRandom(seed: number) {
   let s = seed
@@ -37,7 +35,7 @@ export const CityScape: React.FC = () => {
         const w = ring.minW + rand() * (ring.maxW - ring.minW)
         const d = w * (0.4 + rand() * 0.6)
 
-        dummy.position.set(Math.cos(a) * dist, h / 2 - 10, Math.sin(a) * dist)
+        dummy.position.set(Math.cos(a) * dist, h / 2 - 20, Math.sin(a) * dist)
         dummy.scale.set(w, h, d)
         dummy.updateMatrix()
         matrices.push(dummy.matrix.clone())
@@ -51,14 +49,14 @@ export const CityScape: React.FC = () => {
     const mesh = meshRef.current
     if (!mesh) return
 
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < buildings.length; i++) {
       mesh.setMatrixAt(i, buildings[i])
     }
     mesh.instanceMatrix.needsUpdate = true
   }, [buildings])
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, COUNT]} frustumCulled={false}>
+    <instancedMesh ref={meshRef} args={[undefined, undefined, buildings.length]} frustumCulled={false}>
       <boxGeometry args={[1, 1, 1]} />
       <meshBasicMaterial color={COLORS.groundFar} />
     </instancedMesh>
