@@ -1,6 +1,6 @@
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 import { RigidBody } from '@react-three/rapier'
-import { ScreenShareDisplay, LiveVideoPlayer, Interactable } from '@xrift/world-components'
+import { ScreenShareDisplay, LiveVideoPlayer, Interactable, useInstanceState } from '@xrift/world-components'
 import { Container, Text } from '@react-three/uikit'
 import { BoxGeometry } from 'three'
 import { COLORS } from '../../constants'
@@ -14,7 +14,7 @@ type ScreenMode = 'screen-share' | 'live-video'
 
 export const StageWing: React.FC = () => {
   const screenGeo = useMemo(() => new BoxGeometry(SCREEN_WIDTH, SCREEN_HEIGHT, 0.12), [])
-  const [mode, setMode] = useState<ScreenMode>('screen-share')
+  const [mode, setMode] = useInstanceState<ScreenMode>('stage-screen-mode', 'screen-share')
 
   const toggleMode = useCallback(() => {
     setMode((prev) => (prev === 'screen-share' ? 'live-video' : 'screen-share'))
@@ -56,9 +56,9 @@ export const StageWing: React.FC = () => {
 
       {/* 返しモニター（登壇者向き） */}
       {mode === 'screen-share' ? (
-        <ScreenShareDisplay id="stage-screen" position={[0, 2.5, -14.12]} width={2} rotation={[-2.83, 0, Math.PI]} />
+        <ScreenShareDisplay id="stage-screen" position={[0, 2.2, -14.12]} width={1.4} rotation={[-2.83, 0, Math.PI]} />
       ) : (
-        <LiveVideoPlayer id="stage-screen" position={[0, 2.5, -14.12]} width={2} rotation={[-2.83, 0, Math.PI]} sync="global" />
+        <LiveVideoPlayer id="stage-screen" position={[0, 2.2, -14.12]} width={1.4} rotation={[-2.83, 0, Math.PI]} sync="global" />
       )}
 
       {/* スクリーン切り替えパネル（返しモニター横） */}
@@ -68,9 +68,9 @@ export const StageWing: React.FC = () => {
         onInteract={toggleMode}
         interactionText={mode === 'screen-share' ? 'ライブ配信に切替' : '画面共有に切替'}
       >
-        <group position={[1.6, 2.5, -14.12]} rotation={[-2.83, 0, Math.PI]}>
+        <group position={[1.2, 2.2, -14.12]} rotation={[-2.83, 0, Math.PI]}>
           <Container
-            pixelSize={0.003}
+            pixelSize={0.002}
             width={320}
             flexDirection="column"
             alignItems="center"
