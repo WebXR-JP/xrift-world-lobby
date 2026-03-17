@@ -135,8 +135,8 @@ export const WingRailings: React.FC = () => {
     <group>
       {/* ガラスパネル（個別メッシュ：透明ソート対応） */}
       {railData.map((r, i) => (
-        <mesh key={i} position={[r.cx, RAIL_CENTER_Y, r.cz]} rotation={[0, r.ang, 0]}>
-          <boxGeometry args={[r.len, RAIL_HEIGHT, 0.06]} />
+        <mesh key={i} position={[r.cx, RAIL_CENTER_Y, r.cz]} rotation={[0, r.ang, 0]} renderOrder={-1}>
+          <boxGeometry args={[r.len, RAIL_HEIGHT, 0.06, Math.ceil(r.len), 1, 1]} />
           <meshPhysicalMaterial color={COLORS.glass} transparent opacity={0.2} roughness={0.05} side={2} depthWrite={false} />
         </mesh>
       ))}

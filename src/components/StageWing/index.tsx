@@ -1,6 +1,6 @@
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useRef } from 'react'
 import { RigidBody } from '@react-three/rapier'
-import { ScreenShareDisplay, LiveVideoPlayer, Interactable, useInstanceState } from '@xrift/world-components'
+import { ScreenShareDisplay, LiveVideoPlayer, Interactable, useInstanceState, useInstanceEvent } from '@xrift/world-components'
 import { Container, Text } from '@react-three/uikit'
 import { BoxGeometry } from 'three'
 import { COLORS } from '../../constants'
@@ -15,6 +15,13 @@ type ScreenMode = 'screen-share' | 'live-video'
 export const StageWing: React.FC = () => {
   const screenGeo = useMemo(() => new BoxGeometry(SCREEN_WIDTH, SCREEN_HEIGHT, 0.12), [])
   const [mode, setMode] = useInstanceState<ScreenMode>('stage-screen-mode', 'screen-share')
+  const modeRef = useRef(mode)
+  modeRef.current = mode
+
+  // 後から入室したユーザーに現在のモードを同期する
+  useInstanceEvent('user-joined', () => {
+    setMode(modeRef.current)
+  })
 
   const toggleMode = useCallback(() => {
     setMode((prev) => (prev === 'screen-share' ? 'live-video' : 'screen-share'))

@@ -7,6 +7,7 @@ import { GradientSky } from './components/GradientSky'
 import { StageWing } from './components/StageWing'
 import { CityScape } from './components/CityScape'
 import { WingRailings } from './components/WingRailings'
+import { EntryLogBoard } from './components/EntryLogBoard'
 import { COLORS } from './constants'
 
 export interface WorldProps {
@@ -46,6 +47,9 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       <StageWing />
       <WingRailings />
       <CityScape />
+
+      {/* 入退室ログボード（スポーンエリア付近） */}
+      <EntryLogBoard position={[4.95988839116469, 2.5, 21.6779343638971]} rotation={[3.141592653589793, -1.413716694115408, 3.141592653589793]} />
 
       {/* 東側ポータル */}
       <Portal instanceId="e1f2ba87-fb50-406e-9527-2334cf75cd4c" position={[26, 0.5, 0]} rotation={[0, -Math.PI / 2, 0]} />
