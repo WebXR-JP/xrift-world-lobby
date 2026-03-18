@@ -51,6 +51,6 @@
   },
   "dependencies": {
     "@react-three/uikit": "^1.0.64",
-    "@xrift/world-components": "^0.31.4"
+    "@xrift/world-components": "^0.33.0"
   }
 }
