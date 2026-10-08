@@ -1,7 +1,7 @@
 {
   "world": {
     "distDir": "./dist",
-    "title": "The Lobby",
+    "title": "XRift The Lobby",
     "description": "XRift におけるロビーのようなワールドです。イベント会場や交流スペースなど、様々な用途で利用できることを想定しています。",
     "thumbnailPath": "thumbnail.png",
     "buildCommand": "npm run build",

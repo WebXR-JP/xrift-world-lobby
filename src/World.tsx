@@ -52,7 +52,9 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       <EntryLogBoard position={[4.95988839116469, 2.5, 21.6779343638971]} rotation={[3.141592653589793, -1.413716694115408, 3.141592653589793]} />
 
       {/* 東側ポータル */}
-      <Portal instanceId="e1f2ba87-fb50-406e-9527-2334cf75cd4c" position={[26, 0.5, 0]} rotation={[0, -Math.PI / 2, 0]} />
+      <Portal instanceId="9def5e48-ed0d-4f7e-ba42-7b02ada2a176" position={[26, 0.5, 0]} rotation={[0, -Math.PI / 2, 0]} />
+      <Portal instanceId="7ee2dd84-3c4e-47f0-8d5d-dfeb711eafb9" position={[26, 0.5, -3]} rotation={[0, -Math.PI / 2, 0]} />
+      <Portal instanceId="0772dea4-b017-4f1c-8afe-9bd0c36c037d" position={[26, 0.5, 3]} rotation={[0, -Math.PI / 2, 0]} />
 
       {/* 遠景の地面 */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -12, 0]}>
