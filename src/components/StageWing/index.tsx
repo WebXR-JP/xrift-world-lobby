@@ -1,13 +1,32 @@
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 import { RigidBody } from '@react-three/rapier'
-import { ScreenShareDisplay } from '@xrift/world-components'
-import { BoxGeometry } from 'three'
+import { useTexture } from '@react-three/drei'
+import { ScreenShareDisplay, useScreenShareContext, useXRift } from '@xrift/world-components'
+import { BoxGeometry, SRGBColorSpace } from 'three'
 import { COLORS } from '../../constants'
 
 const SZ = -18
 
 const SCREEN_WIDTH = 15
 const SCREEN_HEIGHT = SCREEN_WIDTH * 9 / 16
+
+/** 画面共有していない間だけスクリーンに表示するプレースホルダー */
+const ScreenPlaceholder: React.FC = () => {
+  const { baseUrl } = useXRift()
+  const { videoElement } = useScreenShareContext()
+  const texture = useTexture(`${baseUrl}screen-placeholder.jpg`)
+  texture.colorSpace = SRGBColorSpace
+
+  // ScreenShareDisplay 標準の案内テキスト(z=0.11)はロゴと重なるため画像で覆い隠す。クリック判定は奪わない
+  return (
+    <group position={[0, 0, 0.13]} visible={!videoElement}>
+      <mesh raycast={() => null}>
+        <planeGeometry args={[SCREEN_WIDTH, SCREEN_HEIGHT]} />
+        <meshBasicMaterial map={texture} toneMapped={false} />
+      </mesh>
+    </group>
+  )
+}
 
 export const StageWing: React.FC = () => {
   const screenGeo = useMemo(() => new BoxGeometry(SCREEN_WIDTH, SCREEN_HEIGHT, 0.12), [])
@@ -36,6 +55,9 @@ export const StageWing: React.FC = () => {
       {/* メインスクリーン（客席向き） */}
       <group position={[0, 7.03, -21.84]}>
         <ScreenShareDisplay id="stage-screen" position={[0, 0, 0.1]} width={SCREEN_WIDTH} />
+        <Suspense fallback={null}>
+          <ScreenPlaceholder />
+        </Suspense>
         <lineSegments>
           <edgesGeometry args={[screenGeo]} />
           <lineBasicMaterial color={COLORS.accent} />
