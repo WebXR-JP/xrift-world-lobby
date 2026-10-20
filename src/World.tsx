@@ -1,4 +1,4 @@
-import { SpawnPoint, Portal } from '@xrift/world-components'
+import { SpawnPoint, Portal, Mirror } from '@xrift/world-components'
 import { useThree } from '@react-three/fiber'
 import { FogExp2 } from 'three'
 import { useEffect } from 'react'
@@ -10,6 +10,7 @@ import { WingRailings } from './components/WingRailings'
 import { EntryLogBoard } from './components/EntryLogBoard'
 import { TutorialPanel } from './components/TutorialPanel'
 import { TUTORIAL_PANELS } from './components/TutorialPanel/content'
+import { AvatarMaker } from './components/AvatarMaker'
 import { COLORS, PLATFORM } from './constants'
 
 export interface WorldProps {
@@ -80,6 +81,11 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
           {...TUTORIAL_PANEL_PLACEMENTS[i]}
         />
       ))}
+
+      {/* 西側ウイング先端のキャラクリブース（+X = ハブ側を正面にする） */}
+      <AvatarMaker position={[-27.3, 0.5, 0]} />
+      {/* キャラクリのパネルの隣（南側）。プレビュー台の前に立った人が自分のアバターを確認できる */}
+      <Mirror position={[-27.3, 1.7, 3.2]} rotation={[0, Math.PI / 2, 0]} size={[2, 2.4]} />
 
       {/* 東側ポータル */}
       <Portal instanceId="9def5e48-ed0d-4f7e-ba42-7b02ada2a176" position={[26, 0.5, 0]} rotation={[0, -Math.PI / 2, 0]} />

@@ -17,3 +17,6 @@ dist
 
 # XRift
 .xrift
+
+# Blender のバックアップ
+*.blend1

@@ -30,6 +30,11 @@
     "camera": {
       "near": 0.1,
       "far": 5000
+    },
+    "permissions": {
+      "allowedCodeRules": [
+        "no-obfuscation"
+      ]
     }
   }
 }
