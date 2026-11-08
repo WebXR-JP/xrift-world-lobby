@@ -54,6 +54,6 @@
   "dependencies": {
     "@pixiv/three-vrm": "^3.5.5",
     "@react-three/uikit": "^1.0.64",
-    "@xrift/world-components": "^0.31.4"
+    "@xrift/world-components": "^0.63.0"
   }
 }

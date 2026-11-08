@@ -87,10 +87,10 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       {/* キャラクリのパネルの隣（南側）。プレビュー台の前に立った人が自分のアバターを確認できる */}
       <Mirror position={[-27.3, 1.7, 3.2]} rotation={[0, Math.PI / 2, 0]} size={[2, 2.4]} />
 
-      {/* 東側ポータル */}
-      <Portal instanceId="9def5e48-ed0d-4f7e-ba42-7b02ada2a176" position={[26, 0.5, 0]} rotation={[0, -Math.PI / 2, 0]} />
-      <Portal instanceId="7ee2dd84-3c4e-47f0-8d5d-dfeb711eafb9" position={[26, 0.5, -3]} rotation={[0, -Math.PI / 2, 0]} />
-      <Portal instanceId="0772dea4-b017-4f1c-8afe-9bd0c36c037d" position={[26, 0.5, 3]} rotation={[0, -Math.PI / 2, 0]} />
+      {/* 東側ポータル（worldId 指定: くぐると空いている部屋に合流、無ければ作成） */}
+      <Portal worldId="cdd3397c-7749-45a1-bdb4-c958cc9f1237" position={[26, 0.5, 0]} rotation={[0, -Math.PI / 2, 0]} />
+      <Portal worldId="e945aa6c-5ab1-4d7c-963c-ec6f0bac1299" position={[26, 0.5, -3]} rotation={[0, -Math.PI / 2, 0]} />
+      <Portal worldId="41100e01-be41-4ee4-81eb-11a30c4f927c" position={[26, 0.5, 3]} rotation={[0, -Math.PI / 2, 0]} />
 
       {/* 遠景の地面 */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -12, 0]}>
